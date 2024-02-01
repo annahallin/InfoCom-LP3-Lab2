@@ -46,12 +46,16 @@ def run(id, current_coords, from_coords, to_coords, SERVER_URL):
                           'status': 'idle'
                          }
             resp = session.post(SERVER_URL, json=drone_info)
+    with open('filen.txt','w') as output_fil:
+          output_fil.write(drone_coords[0]+'\n')
+          output_fil.write(drone_coords[1]+'\n')
+          output_fil.close()
     return drone_coords[0], drone_coords[1]
    
 if __name__ == "__main__":
     # Fill in the IP address of server, in order to location of the drone to the SERVER
     #===================================================================
-    SERVER_URL = "http://SERVER_IP:PORT/drone"
+    SERVER_URL = "http://192.168.1.2:5001/drone"
     #===================================================================
 
     parser = argparse.ArgumentParser()
