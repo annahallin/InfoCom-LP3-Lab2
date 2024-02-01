@@ -18,10 +18,18 @@ myID = "DRONE_2"
 #===================================================================
 current_longitude = 13.21008
 current_latitude = 55.71106
-with open('filen.txt','w') as output_fil:
-          output_fil.write(current_longitude+'\n')
-          output_fil.write(current_latitude+'\n')
-          output_fil.close()
+
+try:
+      f = open("filen.txt", "x")
+      f.write(current_longitude+","+current_latitude)
+      f.close
+except: 
+      with open("filen.txt","r") as filen:
+        for line in filen:
+             fil=filen.split()
+             current_longitude=fil[0]
+             current_latitude=fil[1]
+
 #===================================================================
 
 drone_info = {'id': myID,
@@ -42,16 +50,18 @@ def main():
     coords = request.json
     # Get current longitude and latitude of the drone 
     #===================================================================
-    with open('filen.txt', 'r') as fil: 
-              #rader = fil.read().splitlines()
-              Long=float(fil.readline())
-              Lat = float(fil.readline())
+    with open("filen.txt","r") as filen:
+        for line in filen:
+             fil=filen.split(",")
+             current_longitude=fil[0]
+             current_latitude=fil[1]
+              #Long=float(fil.readline())
+              #Lat = float(fil.readline())
     # long_variabel = rader[0]
     # lat_variabel=rader[1]
 
 
-    current_longitude = Long
-    current_latitude = Lat
+   
     #===================================================================
     from_coord = coords['from']
     to_coord = coords['to']
@@ -60,8 +70,7 @@ def main():
                                                  '--tlong', str(to_coord[0]), '--tlat', str(to_coord[1]),
                                                  '--id', myID
                     ])
-    long = current_longitude
-    lat= current_latitude
+    
     return 'New route received'
    
 
