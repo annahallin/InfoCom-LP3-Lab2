@@ -20,16 +20,17 @@ current_longitude = 13.21008
 current_latitude = 55.71106
 
 try:
-      f = open("filen.txt", "x")
-      f.write(current_longitude+","+current_latitude)
+    with open("filen.txt",'w') as f:
+      f.write(f"{current_longitude},{current_latitude}")
       f.close
-except: 
-      with open("filen.txt","r") as filen:
-        for line in filen:
-             fil=filen.split()
-             current_longitude=fil[0]
-             current_latitude=fil[1]
-
+except FileExistsError: 
+    pass 
+      #with open("filen.txt","r") as filen:
+       # line= filen.readLine()
+        #if line:
+         #    current_longitude, current_latitude = map(float, line.split(","))
+             
+            
 #===================================================================
 
 drone_info = {'id': myID,
@@ -50,11 +51,15 @@ def main():
     coords = request.json
     # Get current longitude and latitude of the drone 
     #===================================================================
-    with open("filen.txt","r") as filen:
-        for line in filen:
-             fil=filen.split(",")
-             current_longitude=fil[0]
-             current_latitude=fil[1]
+    with open("filen.txt",'r') as filen:
+        line = filen.readLine()
+        if line:
+             try: 
+                 current_longitude, current_latitude = map(float, line.split(","))
+             
+             except ValueError:
+                 return "Invalid coordinates format"
+             
               #Long=float(fil.readline())
               #Lat = float(fil.readline())
     # long_variabel = rader[0]
