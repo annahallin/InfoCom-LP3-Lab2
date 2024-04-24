@@ -46,9 +46,7 @@ def run(id, current_coords, from_coords, to_coords, SERVER_URL):
                           'status': 'idle'
                          }
             resp = session.post(SERVER_URL, json=drone_info)
-    with open('filen.txt','w') as output_fil:
-        output_fil.write(drone_coords[0]+","+drone_coords[1])
-        output_fil.close()
+   
     return drone_coords[0], drone_coords[1]
    
 if __name__ == "__main__":
@@ -73,5 +71,9 @@ if __name__ == "__main__":
 
     print(current_coords, from_coords, to_coords)
     drone_long, drone_lat = run(args.id ,current_coords, from_coords, to_coords, SERVER_URL)
+
+    with open('filen.txt','w') as f:
+        f.write(str(drone_long)+','+str(drone_lat))
+        f.close
     # drone_long and drone_lat is the final location when drlivery is completed, find a way save the value, and use it for the initial coordinates of next delivery
     #=============================================================================

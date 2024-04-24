@@ -11,27 +11,15 @@ app.secret_key = 'dljsaklqk24e21cjn!Ew@@dsa5'
 
 #Give a unique ID for the drone
 #===================================================================
-myID = "DRONE_2"
+myID = "DRONE_1"
 #===================================================================
 
-# Get initial longitude and latitude the drone
-#===================================================================
-current_longitude = 13.21008
-current_latitude = 55.71106
 
-try:
-    with open("filen.txt",'w') as f:
-      f.write(f"{current_longitude},{current_latitude}")
-      f.close
-except FileExistsError: 
-    pass 
-      #with open("filen.txt","r") as filen:
-       # line= filen.readLine()
-        #if line:
-         #    current_longitude, current_latitude = map(float, line.split(","))
-             
-            
-#===================================================================
+with open("filen.txt",'r') as filen:
+        läsafil = filen.read()
+        current_longitude = float(läsafil.split(',')[0])
+        current_latitude = float(läsafil.split(',')[1])
+        filen.close()
 
 drone_info = {'id': myID,
                 'longitude': current_longitude,
@@ -49,24 +37,15 @@ with requests.Session() as session:
 @app.route('/', methods=['POST'])
 def main():
     coords = request.json
+    
     # Get current longitude and latitude of the drone 
     #===================================================================
     with open("filen.txt",'r') as filen:
-        line = filen.readLine()
-        if line:
-             try: 
-                 current_longitude, current_latitude = map(float, line.split(","))
-             
-             except ValueError:
-                 return "Invalid coordinates format"
-             
-              #Long=float(fil.readline())
-              #Lat = float(fil.readline())
-    # long_variabel = rader[0]
-    # lat_variabel=rader[1]
-
-
-   
+        läsafil = filen.read()
+        current_longitude = float(läsafil.split(',')[0])
+        current_latitude = float(läsafil.split(',')[1])
+        filen.close()
+        
     #===================================================================
     from_coord = coords['from']
     to_coord = coords['to']
